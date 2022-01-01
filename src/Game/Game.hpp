@@ -26,7 +26,7 @@ private:
   SDL_Renderer *renderer;
   SDL_Window *window;
   SDL_Surface *backgroundImage;
-  SDL_Texture *background;
+  SDL_Texture *backgroundTex;
   bool isRunning;
 };
 

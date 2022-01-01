@@ -32,7 +32,7 @@ void Game::init(const char *title, int xpos, int ypos, int width, int height,
     }
 
     backgroundImage = IMG_Load("assets/background.png");
-    background = SDL_CreateTextureFromSurface(renderer, backgroundImage);
+    backgroundTex = SDL_CreateTextureFromSurface(renderer, backgroundImage);
 
     isRunning = true;
   } else {
@@ -56,13 +56,13 @@ void Game::update() {}
 
 void Game::render() {
   SDL_RenderClear(renderer);
-  SDL_RenderCopy(renderer, background, NULL, NULL);
+  SDL_RenderCopy(renderer, backgroundTex, NULL, NULL);
   SDL_RenderPresent(renderer);
 }
 
 void Game::clean() {
   SDL_FreeSurface(backgroundImage);
-  SDL_DestroyTexture(background);
+  SDL_DestroyTexture(backgroundTex);
   SDL_DestroyRenderer(renderer);
   SDL_DestroyWindow(window);
   IMG_Quit();
