@@ -16,6 +16,7 @@ public:
   void handleEvents();
   void update();
   void render();
+  SDL_Renderer *getRenderer();
 
   bool running();
 
@@ -23,7 +24,9 @@ private:
   SDL_Renderer *renderer;
   SDL_Window *window;
   SDL_Surface *backgroundImage;
+  SDL_Surface *planetImage;
   SDL_Texture *backgroundTex;
+  SDL_Texture *planetTex;
   bool isRunning;
 };
 

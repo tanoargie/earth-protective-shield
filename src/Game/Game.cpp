@@ -23,7 +23,9 @@ Game::Game(const char *title, int width, int height) {
     }
 
     backgroundImage = IMG_Load("assets/background.png");
+    planetImage = IMG_Load("assets/earth.png");
     backgroundTex = SDL_CreateTextureFromSurface(renderer, backgroundImage);
+    planetTex = SDL_CreateTextureFromSurface(renderer, planetImage);
 
     isRunning = true;
   } else {
@@ -32,9 +34,10 @@ Game::Game(const char *title, int width, int height) {
 }
 
 Game::~Game() {
-
   SDL_FreeSurface(backgroundImage);
+  SDL_FreeSurface(planetImage);
   SDL_DestroyTexture(backgroundTex);
+  SDL_DestroyTexture(planetTex);
   SDL_DestroyRenderer(renderer);
   SDL_DestroyWindow(window);
   IMG_Quit();
@@ -58,7 +61,10 @@ void Game::update() {}
 void Game::render() {
   SDL_RenderClear(renderer);
   SDL_RenderCopy(renderer, backgroundTex, NULL, NULL);
+  SDL_RenderCopy(renderer, planetTex, NULL, NULL);
   SDL_RenderPresent(renderer);
 }
+
+SDL_Renderer *Game::getRenderer() { return renderer; }
 
 bool Game::running() { return isRunning; }
