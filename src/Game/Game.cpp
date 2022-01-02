@@ -1,21 +1,12 @@
 #include "Game.hpp"
 #include "SDL_events.h"
 
-Game::Game() {}
-
-Game::~Game() {}
-
-void Game::init(const char *title, int xpos, int ypos, int width, int height,
-                bool fullscreen) {
-  int flags = 0;
-  if (fullscreen) {
-    flags = SDL_WINDOW_FULLSCREEN || SDL_WINDOW_OPENGL;
-  }
-
+Game::Game(const char *title, int width, int height) {
   if (SDL_Init(SDL_INIT_EVERYTHING) == 0) {
     cout << "Initialized!" << endl;
     window = SDL_CreateWindow("EPS", SDL_WINDOWPOS_UNDEFINED,
-                              SDL_WINDOWPOS_UNDEFINED, width, height, flags);
+                              SDL_WINDOWPOS_UNDEFINED, width, height,
+                              SDL_WINDOW_OPENGL);
 
     if (!window) {
       printf("Could not create window: %s\n", SDL_GetError());
@@ -40,6 +31,16 @@ void Game::init(const char *title, int xpos, int ypos, int width, int height,
   }
 }
 
+Game::~Game() {
+
+  SDL_FreeSurface(backgroundImage);
+  SDL_DestroyTexture(backgroundTex);
+  SDL_DestroyRenderer(renderer);
+  SDL_DestroyWindow(window);
+  IMG_Quit();
+  SDL_Quit();
+}
+
 void Game::handleEvents() {
   SDL_Event event;
   SDL_PollEvent(&event);
@@ -58,15 +59,6 @@ void Game::render() {
   SDL_RenderClear(renderer);
   SDL_RenderCopy(renderer, backgroundTex, NULL, NULL);
   SDL_RenderPresent(renderer);
-}
-
-void Game::clean() {
-  SDL_FreeSurface(backgroundImage);
-  SDL_DestroyTexture(backgroundTex);
-  SDL_DestroyRenderer(renderer);
-  SDL_DestroyWindow(window);
-  IMG_Quit();
-  SDL_Quit();
 }
 
 bool Game::running() { return isRunning; }

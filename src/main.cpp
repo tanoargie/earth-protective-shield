@@ -6,21 +6,14 @@
 const int SCREEN_WIDTH = 800;
 const int SCREEN_HEIGHT = 600;
 
-Game *game = NULL;
-
 int main() {
-  game = new Game();
-
-  game->init("EPS", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
-             SCREEN_WIDTH, SCREEN_HEIGHT, false);
+  Game *game = new Game("EPS", SCREEN_WIDTH, SCREEN_HEIGHT);
 
   while (game->running()) {
     game->handleEvents();
     game->update();
     game->render();
   }
-
-  game->clean();
 
   return 0;
 }
