@@ -1,9 +1,12 @@
 #ifndef Game_hpp
 #define Game_hpp
 
-#include "SDL.h"
-#include "SDL_image.h"
+#include <SDL.h>
+#include <SDL_image.h>
 #include <iostream>
+
+#include "../Entity/Entity.hpp"
+#include "../Player/Player.hpp"
 
 using namespace std;
 
@@ -16,7 +19,7 @@ public:
   void handleEvents();
   void update();
   void render();
-  SDL_Renderer *getRenderer();
+  void draw(Entity e);
 
   bool running();
 
@@ -24,10 +27,10 @@ private:
   SDL_Renderer *renderer;
   SDL_Window *window;
   SDL_Surface *backgroundImage;
-  SDL_Surface *planetImage;
   SDL_Texture *backgroundTex;
-  SDL_Texture *planetTex;
   bool isRunning;
+  Player player;
+  Entity planet;
 };
 
 #endif

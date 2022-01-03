@@ -2,7 +2,7 @@
 #include "SDL_events.h"
 
 Game::Game(const char *title, int width, int height) {
-  if (SDL_Init(SDL_INIT_EVERYTHING) == 0) {
+  if (SDL_Init(SDL_INIT_EVERYTHING) == 0 && IMG_Init(IMG_INIT_PNG)) {
     cout << "Initialized!" << endl;
     window = SDL_CreateWindow("EPS", SDL_WINDOWPOS_UNDEFINED,
                               SDL_WINDOWPOS_UNDEFINED, width, height,
@@ -23,9 +23,22 @@ Game::Game(const char *title, int width, int height) {
     }
 
     backgroundImage = IMG_Load("assets/background.png");
-    planetImage = IMG_Load("assets/earth.png");
     backgroundTex = SDL_CreateTextureFromSurface(renderer, backgroundImage);
-    planetTex = SDL_CreateTextureFromSurface(renderer, planetImage);
+
+    planet.setDest(300, 400, 200, 200);
+    planet.setImage("assets/earth.png", renderer);
+    planet.setSource(0, 0, 763, 383);
+
+    player.setDest(385, 385, 30, 30);
+    player.setImage("assets/spaceShip.png", renderer);
+    player.setSource(0, 0, 212, 256);
+
+    int planetHeight;
+    int planetWidth;
+
+    SDL_QueryTexture(planet.getTex(), NULL, NULL, &planetWidth, &planetHeight);
+
+    cout << planetHeight << endl;
 
     isRunning = true;
   } else {
@@ -35,9 +48,7 @@ Game::Game(const char *title, int width, int height) {
 
 Game::~Game() {
   SDL_FreeSurface(backgroundImage);
-  SDL_FreeSurface(planetImage);
   SDL_DestroyTexture(backgroundTex);
-  SDL_DestroyTexture(planetTex);
   SDL_DestroyRenderer(renderer);
   SDL_DestroyWindow(window);
   IMG_Quit();
@@ -58,13 +69,18 @@ void Game::handleEvents() {
 
 void Game::update() {}
 
+void Game::draw(Entity o) {
+  SDL_Rect dest = o.getDest();
+  SDL_Rect src = o.getSource();
+  SDL_RenderCopyEx(renderer, o.getTex(), &src, &dest, 0, NULL, SDL_FLIP_NONE);
+}
+
 void Game::render() {
   SDL_RenderClear(renderer);
   SDL_RenderCopy(renderer, backgroundTex, NULL, NULL);
-  SDL_RenderCopy(renderer, planetTex, NULL, NULL);
+  draw(planet);
+  draw(player);
   SDL_RenderPresent(renderer);
 }
-
-SDL_Renderer *Game::getRenderer() { return renderer; }
 
 bool Game::running() { return isRunning; }
